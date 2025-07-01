@@ -3,6 +3,13 @@
 ## Overview
 Hi there! Welcome to NewsSummary, a project I’m really excited to share with you. It’s a web app designed to make staying informed easier and faster. With the help of Artificial Intelligence (AI) and Azure OpenAI services, NewsSummary takes long news articles and turns them into short, easy-to-read summaries. It’s perfect for anyone who wants to stay updated without spending hours reading.
 
+
+## Demo Screenshot
+
+Here’s a quick look at what NewsSummary looks like in action:
+
+![NewsSummary Screenshot](sample.png)
+
 ## Project Structure
 ```
 backend/
@@ -64,12 +71,6 @@ When you’re ready to share the app with the world, you can create a production
 cd frontend
 npm run build
 ```
-
-## Sample Screenshot
-
-Here’s a quick look at what NewsSummary looks like in action:
-
-![NewsSummary Screenshot](sample.png)
 
 ## Contributing
 I’d love to hear your ideas and suggestions! If you’d like to contribute, feel free to fork the repository and send a pull request. Let’s make NewsSummary even better together.
