@@ -111,7 +111,8 @@ RSS contains items in below format:
 ...
 """
 
-You should first rank which you think is going to be most popular for audience (Senior Software engineer aspiring to get into field of AI) and filter top 3 news and compose a Linkedin post which i can copy paste. Prioritize news from Microsoft, OpenAI, Google and Apple in this order if news is available regarding them.
+You should filter posts in the RSS feed only post the time stamp ${ new Date(new Date().getTime() - (24*60*60*1000)) } on the field pubDate.
+Then rank which you think is going to be most popular for audience (Senior Software engineer aspiring to get into field of AI) and filter top 3 news and compose a Linkedin post which i can copy paste. Prioritize news from Microsoft, OpenAI, Google and Apple in this order if news is available regarding them.
 I want the tone of the linkedin post to be excited, yet realistically speaking, also clearly mention this is TODAY's top 3 AI news of today. 
 
 Then, Humanize the content so that it does not look like some AI generated. Remove Emojis and don't bold any content.
