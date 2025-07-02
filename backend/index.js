@@ -112,7 +112,7 @@ RSS contains items in below format:
 """
 
 You should filter posts in the RSS feed only post the time stamp ${ new Date(new Date().getTime() - (24*60*60*1000)) } on the field pubDate.
-Then rank which you think is going to be most popular for audience (Senior Software engineer aspiring to get into field of AI) and filter top 15 news. Prioritize news from Microsoft, OpenAI, Google and Apple in this order if news is available regarding them.
+Then rank which you think is going to be most popular for audience (Senior Software engineer aspiring to get into field of AI) and filter top 10 news. Prioritize news from Microsoft, OpenAI, Google and Apple in this order if news is available regarding them.
 
 Return a valid JSON object in the following format:
 {
@@ -150,6 +150,8 @@ Here's a sample response I expected from you:
       "source": "https://www.wired.com/story/openai-meta-leadership-talent-rivalry/"
     }]
 }
+
+Ensure the response includes exactly 10 news items in the "response" array.
 
 Do not include response as string enclosed in \`\`\`json \`\`\` instead just return valid JSON object like { response: [ ... ]}
 

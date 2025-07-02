@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import PostSelectionDialog from './PostSelectionDialog';
 
 function App() {
   const [post, setPost] = useState('');
   const [loading, setLoading] = useState(false);
+  const [allPosts, setAllPosts] = useState([]); // Store all posts
+  const [showDialog, setShowDialog] = useState(false);
 
   const generatePost = async () => {
     console.log('generatePost function called');
@@ -25,6 +28,7 @@ function App() {
 
         console.log('Formatted post:', formattedPost);
         setPost(formattedPost);
+        setAllPosts(data.response); // Store all posts for selection
       } else {
         console.warn('No valid news items found in response.');
         setPost('No valid news items found.');
@@ -41,6 +45,25 @@ function App() {
   const copyContent = () => {
     navigator.clipboard.writeText(post);
     alert('Post copied to clipboard!');
+  };
+
+  const handleModifySelection = () => {
+    setShowDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    setShowDialog(false);
+  };
+
+  const handleDialogSave = (selectedPosts) => {
+    const formattedPost = `Here are my picks for Today's Top 3 AI News:\n\n` +
+      selectedPosts.map((item, index) => (
+        `${index + 1}. ${item.heading}\n   ${item.summary}\n   source: ${item.source}\n\n`
+      )).join('') +
+      `The AI landscape is evolving rapidly, and staying informed is key to understanding where the field is headed.\n\nFollow me for more updates on the latest AI breakthroughs, talent trends, and industry insights!`;
+
+    setPost(formattedPost);
+    setShowDialog(false);
   };
 
   return (
@@ -120,6 +143,32 @@ function App() {
         >
           Copy
         </button>
+        <button
+          onClick={handleModifySelection}
+          style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            backgroundColor: '#6c757d', // Changed to gray
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            marginTop: '20px',
+            marginLeft: '10px',
+            transition: 'background-color 0.3s'
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = '#5a6268'} // Adjusted hover color to a darker gray
+          onMouseOut={(e) => e.target.style.backgroundColor = '#6c757d'} // Adjusted back to gray
+        >
+          Modify Post Selection
+        </button>
+        {showDialog && (
+          <PostSelectionDialog
+            posts={allPosts}
+            onClose={handleDialogClose}
+            onSave={handleDialogSave}
+          />
+        )}
       </div>
     </div>
   );
