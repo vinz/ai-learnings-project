@@ -77,3 +77,8 @@ I’d love to hear your ideas and suggestions! If you’d like to contribute, fe
 
 ## License
 This project is open-source and available under the MIT License. Feel free to use it, share it, and build on it. Enjoy!
+
+## Use Cases
+
+### One Day One AI
+Imagine receiving a daily summary of the most important news, tailored just for you. With NewsSummary, you can! Our "One Day One AI" feature allows users to get a concise summary of the news once a day. It’s like having a personal news curator that brings you up to speed with the world in just a few minutes. Perfect for busy professionals, students, or anyone who wants to stay informed with minimal effort.
