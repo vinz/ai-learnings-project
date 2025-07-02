@@ -112,56 +112,46 @@ RSS contains items in below format:
 """
 
 You should filter posts in the RSS feed only post the time stamp ${ new Date(new Date().getTime() - (24*60*60*1000)) } on the field pubDate.
-Then rank which you think is going to be most popular for audience (Senior Software engineer aspiring to get into field of AI) and filter top 3 news and compose a Linkedin post which i can copy paste. Prioritize news from Microsoft, OpenAI, Google and Apple in this order if news is available regarding them.
-I want the tone of the linkedin post to be excited, yet realistically speaking, also clearly mention this is TODAY's top 3 AI news of today. 
+Then rank which you think is going to be most popular for audience (Senior Software engineer aspiring to get into field of AI) and filter top 15 news. Prioritize news from Microsoft, OpenAI, Google and Apple in this order if news is available regarding them.
 
-Then, Humanize the content so that it does not look like some AI generated. Remove Emojis and don't bold any content.
-Also, ask users to follow for more related content.
+Return a valid JSON object in the following format:
+{
+  "response": [
+  {
+  "heading": "Headline 1",
+  "summary": "two line summary",
+  "source": "<valid link extracted from rss for this headline>"
+  },
+  {
+  "heading": "Headline 2",
+  "summary": "two line summary",
+  "source": "<valid link extracted from rss for this headline>"
+  },
+  ...
+  ]
+}
 
-Follow below format:
-"""
-Here are my picks for Today's Top 3 AI News:  
-1. Headline 1
-   two line summary
-   source: <valid link extracted from rss for this headline>
+Here's a sample response I expected from you:
+{
+  "response": [
+    {
+      "heading": "Microsoft Says Its New AI System Diagnosed Patients 4 Times More Accurately Than Human Doctors",
+      "summary": "Microsoft is leveraging cutting-edge AI to revolutionize health care diagnostics, claiming unprecedented accuracy and cost-saving potential. The system was developed with talent poached from Google.",
+      "source": "https://www.wired.com/story/microsoft-medical-superintelligence-diagnosis/"
+    },
+    {
+      "heading": "Here Is Everyone Mark Zuckerberg Has Hired So Far for Meta’s ‘Superintelligence’ Team",
+      "summary": "Meta is on a hiring spree, pulling top AI researchers from rivals like OpenAI, Anthropic, and Google to build its ambitious 'superintelligence' team. Zuckerberg's moves highlight the fierce competition for talent in AI research.",
+      "source": "https://www.wired.com/story/mark-zuckerberg-welcomes-superintelligence-team/"
+    },
+    {
+      "heading": "OpenAI Leadership Responds to Meta Offers: ‘Someone Has Broken Into Our Home’",
+      "summary": "As Meta aggressively poaches OpenAI researchers, OpenAI’s leadership grapples with recalibrating compensation to retain their top talent. This rivalry underscores the growing tension in the AI industry.",
+      "source": "https://www.wired.com/story/openai-meta-leadership-talent-rivalry/"
+    }]
+}
 
-2. Headline 2
-   two line summary
-   source: <valid link extracted from rss for this headline>
-
-3. Headline 3
-   two line summary
-   source: <valid link extracted from rss for this headline>
-
-The AI landscape is evolving rapidly, and staying informed is key to understanding where the field is headed. 
-
-Follow me for more updates on the latest AI breakthroughs, talent trends, and industry insights!
-"""
-
-
-Here's a sample reponse I expected from you:
-"""
-Here are my picks for Today's Top 3 AI News:  
-
-1. Microsoft Says Its New AI System Diagnosed Patients 4 Times More Accurately Than Human Doctors  
-   Microsoft is leveraging cutting-edge AI to revolutionize health care diagnostics, claiming unprecedented accuracy and cost-saving potential. The system was developed with talent poached from Google.  
-   Source: https://www.wired.com/story/microsoft-medical-superintelligence-diagnosis/
-
-2. Here Is Everyone Mark Zuckerberg Has Hired So Far for Meta’s ‘Superintelligence’ Team
-   Meta is on a hiring spree, pulling top AI researchers from rivals like OpenAI, Anthropic, and Google to build its ambitious "superintelligence" team. Zuckerberg's moves highlight the fierce competition for talent in AI research.
-   Source: https://www.wired.com/story/mark-zuckerberg-welcomes-superintelligence-team/
-
-3. OpenAI Leadership Responds to Meta Offers: ‘Someone Has Broken Into Our Home’
-   As Meta aggressively poaches OpenAI researchers, OpenAI’s leadership grapples with recalibrating compensation to retain their top talent. This rivalry underscores the growing tension in the AI industry.
-   Source: https://www.wired.com/story/openai-meta-leadership-talent-rivalry/
-
-The AI landscape is evolving rapidly, and staying informed is key to understanding where the field is headed. 
-
-Follow me for more updates on the latest AI breakthroughs, talent trends, and industry insights!
-"""
-
-Note: don't bold any text and don't output anything apart from above.
-
+Do not include response as string enclosed in \`\`\`json \`\`\` instead just return valid JSON object like { response: [ ... ]}
 
 Here are the articles:
 
@@ -176,15 +166,21 @@ ${newsText}`
     });
 
     console.log('Received response from Azure OpenAI API.');
+    console.log('Response status:', response.status);
+    console.log('Response:', response.body.choices[0].message.content);
 
     if (response.status != 200) {
       console.error('Error from Azure OpenAI API:', response.body.error);
       throw response.body.error;
     }
 
-    const post = response.body.choices[0].message.content;
+    let rawResponse = response.body.choices[0].message.content;
+    if (rawResponse.startsWith('```json') && rawResponse.endsWith('```')) {
+        rawResponse = rawResponse.slice(7, -3).trim();
+    }
+    const post = JSON.parse(rawResponse).response;
     console.log('Generated post successfully.');
-    res.json({ post });
+    res.json({ response: post });
   } catch (error) {
     console.error("Error generating post:", error);
     res.status(500).json({ error: "Failed to generate post." });

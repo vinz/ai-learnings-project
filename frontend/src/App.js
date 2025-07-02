@@ -5,14 +5,35 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const generatePost = async () => {
+    console.log('generatePost function called');
     setLoading(true);
     try {
+      console.log('Fetching data from API...');
       const response = await fetch('http://localhost:5000/generate-post');
+      console.log('API response received:', response);
       const data = await response.json();
-      setPost(data.post);
+      console.log('Parsed JSON data:', data);
+
+      if (data.response && Array.isArray(data.response)) {
+        console.log('Valid response received, processing top 3 news items...');
+        const top3News = data.response.slice(0, 3);
+        const formattedPost = `Here are my picks for Today's Top 3 AI News:\n\n` +
+          top3News.map((item, index) => (
+            `${index + 1}. ${item.heading}\n   ${item.summary}\n   source: ${item.source}\n\n`
+          )).join('') +
+          `The AI landscape is evolving rapidly, and staying informed is key to understanding where the field is headed.\n\nFollow me for more updates on the latest AI breakthroughs, talent trends, and industry insights!`;
+
+        console.log('Formatted post:', formattedPost);
+        setPost(formattedPost);
+      } else {
+        console.warn('No valid news items found in response.');
+        setPost('No valid news items found.');
+      }
     } catch (error) {
       console.error('Error generating post:', error);
+      setPost('Failed to generate post. Please try again later.');
     } finally {
+      console.log('generatePost function execution completed.');
       setLoading(false);
     }
   };
