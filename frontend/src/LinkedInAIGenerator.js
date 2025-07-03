@@ -83,13 +83,14 @@ If you’re into AI 🤖 or just curious about where things are headed, follow a
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       maxWidth: '600px',
       width: '100%',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginTop: '50px',
     }}>
       <h1 style={{
         color: '#333',
         fontSize: '2rem',
         marginBottom: '20px'
-      }}>AI News LinkedIn Post Generator</h1>
+      }}>🤖 AI News LinkedIn Post Generator</h1>
       <button
         onClick={generatePost}
         style={{
@@ -106,15 +107,15 @@ If you’re into AI 🤖 or just curious about where things are headed, follow a
         onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
         onMouseOut={(e) => e.target.style.backgroundColor = '#007BFF'}
       >
-        Generate Latest AI News LinkedIn Post
+        ✨ Generate Latest AI News LinkedIn Post ✨
       </button>
-      {loading && <p style={{ color: '#007BFF', fontSize: '18px' }}>Loading...</p>}
+      {loading && <p style={{ color: '#007BFF', fontSize: '18px' }}>⏳ Loading...</p>}
       <textarea
         readOnly
         value={post}
         style={{
           width: '100%',
-          height: '200px',
+          height: '500px',
           marginTop: '20px',
           fontSize: '14px',
           padding: '10px',

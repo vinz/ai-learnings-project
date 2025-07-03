@@ -14,7 +14,7 @@ function Header() {
       backgroundColor: '#007BFF',
       color: '#fff',
     }}>
-      <h1 style={{ margin: 0 }}>AI Learnings Project</h1>
+      <h2 style={{ margin: 0 }}>AI Learnings Project</h2>
       <nav>
         <a href="/linkedin-ai-generator" style={{ color: '#fff', marginRight: '15px', textDecoration: 'none' }}>LinkedIn AI Generator</a>
         <a href="/one-day-one-ai" style={{ color: '#fff', textDecoration: 'none' }}>One Day One AI</a>
