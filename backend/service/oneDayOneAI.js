@@ -4,7 +4,7 @@ const { AzureKeyCredential } = require('@azure/core-auth');
 const ModelClient = require('@azure-rest/ai-inference').default;
 
 const endpoint = process.env.AZURE_ENDPOINT;
-const modelName = "gpt-4o";
+const modelName = process.env.AZURE_MODEL_NAME;
 
 async function getRandomTopic() {
   try {

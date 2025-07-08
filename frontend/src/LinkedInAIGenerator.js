@@ -111,7 +111,6 @@ If you’re into AI 🤖 or just curious about where things are headed, follow a
       </button>
       {loading && <p style={{ color: '#007BFF', fontSize: '18px' }}>⏳ Loading...</p>}
       <textarea
-        readOnly
         value={post}
         style={{
           width: '100%',

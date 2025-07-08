@@ -3,7 +3,7 @@ const ModelClient = require('@azure-rest/ai-inference').default;
 const { JSDOM } = require('jsdom');
 
 const endpoint = process.env.AZURE_ENDPOINT;
-const modelName = "gpt-4o";
+const modelName = process.env.AZURE_MODEL_NAME;
 const RSS_URL = "https://news.google.com/rss/topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRGRqTVhZU0JXVnVMVWRDR2dKSlRpZ0FQAQ/sections/CAQiR0NCQVNMd29JTDIwdk1EZGpNWFlTQldWdUxVZENHZ0pKVGlJTkNBUWFDUW9ITDIwdk1HMXJlaW9KRWdjdmJTOHdiV3Q2S0FBKi4IACoqCAoiJENCQVNGUW9JTDIwdk1EZGpNWFlTQldWdUxVZENHZ0pKVGlnQVABUAE?hl=en-IN&gl=IN&ceid=IN%3Aen";
 
 async function fetchRSSFeed(url) {
@@ -82,12 +82,12 @@ Please create an engaging summary of these AI news articles given to you from Go
 RSS contains items in below format:
 """
 <item>
-<title>Gemini CLI: your open-source AI agent - Google Blog</title>
-<link>https://news.google.com/rss/articles/CBMijwFBVV95cUxOVlZka183UUZZSXR1dHd5SHlUdUVnakFCbXZtaUVVQXFFaUtrdjlBbi10M1NGNzRVeVgwblNtRERvVkNBMjFtenBYanVzTUstR0xjVk1MMWtycENrV2d5NWVLUGo1YS0xWHNVMEJTcm1YSzdQY0dmN2kwbzVJZzljM1BKdXhhc1pjcVhvLVNJTQ?oc=5</link>
-<guid isPermaLink="false">CBMijwFBVV95cUxOVlZka183UUZZSXR1dHd5SHlUdUVnakFCbXZtaUVVQXFFaUtrdjlBbi10M1NGNzRVeVgwblNtRERvVkNBMjFtenBYanVzTUstR0xjVk1MMWtycENrV2d5NWVLUGo1YS0xWHNVMEJTcm1YSzdQY0dmN2kwbzVJZzljM1BKdXhhc1pjcVhvLVNJTQ</guid>
+<title></title>
+<link></link>
+<guid isPermaLink="false"></guid>
 <pubDate>Wed, 25 Jun 2025 13:15:26 GMT</pubDate>
-<description><ol><li><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxOVlZka183UUZZSXR1dHd5SHlUdUVnakFCbXZtaUVVQXFFaUtrdjlBbi10M1NGNzRVeVgwblNtRERvVkNBMjFtenBYanVzTUstR0xjVk1MMWtycENrV2d5NWVLUGo1YS0xWHNVMEJTcm1YSzdQY0dmN2kwbzVJZzljM1BKdXhhc1pjcVhvLVNJTQ?oc=5" target="_blank">Gemini CLI: your open-source AI agent</a>&nbsp;&nbsp;<font color="#6f6f6f">Google Blog</font></li></ol></description>
-<source url="https://blog.google">Google Blog</source>
+<description></description>
+<source url=""></source>
 </item>
 ...
 """
