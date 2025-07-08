@@ -2,6 +2,13 @@
 
 Welcome to the AI Learnings Project! This repository is designed to explore and share insights about artificial intelligence through engaging content and tools.
 
+## Visual Overview
+
+Here are some examples of what you can create with this project:
+
+![LinkedIn Generator Sample](linkedin-generator-sample.png)
+![One Day One AI Sample](OneDayOneAI-sample.png)
+
 ## Project Overview
 
 This project consists of two main components:
