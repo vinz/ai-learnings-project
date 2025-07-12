@@ -18,10 +18,10 @@ function LinkedInAIGenerator() {
       console.log('Parsed JSON data:', data);
 
       if (data.response && Array.isArray(data.response)) {
-        console.log('Valid response received, processing top 3 news items...');
-        const top3News = data.response.slice(0, 3);
-        const formattedPost = `🚨 Here are the Top 3 AI headlines you shouldn't miss today:\n\n` +
-          top3News.map((item, index) => (
+        console.log('Valid response received, processing top 5 news items...');
+        const top5News = data.response.slice(0, 5);
+        const formattedPost = `🚨 Here are the Top 5 AI headlines you shouldn't miss this week:\n\n` +
+          top5News.map((item, index) => (
             `${index + 1}. ${item.heading}\n   ${item.summary}\n   source: ${item.source}\n\n`
           )).join('') +
           `The AI space is moving fast ⚡—and it’s not always easy to keep up. I’ll keep sharing what stands out: key trends, bold moves, and stories worth knowing.
@@ -60,7 +60,7 @@ If you’re into AI 🤖 or just curious about where things are headed, follow a
   };
 
   const handleDialogSave = (selectedPosts) => {
-    const formattedPost = `🚨 Here are the Top 3 AI headlines you shouldn't miss today:\n\n` +
+    const formattedPost = `🚨 Here are the Top 5 AI headlines you shouldn't miss this week:\n\n` +
       selectedPosts.map((item, index) => (
         `${index + 1}. ${item.heading}\n   ${item.summary}\n   source: ${item.source}\n\n`
       )).join('') +

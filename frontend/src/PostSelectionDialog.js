@@ -8,7 +8,7 @@ function PostSelectionDialog({ posts, onClose, onSave }) {
       if (prev.includes(post)) {
         return prev.filter((p) => p !== post);
       } else {
-        return [...prev, post].slice(0, 3); // Limit to 3 selections
+        return [...prev, post].slice(0, 5); // Limit to 5 selections
       }
     });
   };
@@ -34,7 +34,7 @@ function PostSelectionDialog({ posts, onClose, onSave }) {
         width: '100%',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
       }}>
-        <h2>Select 3 Posts</h2>
+        <h2>Select 5 Posts</h2>
         <ul style={{ listStyle: 'none', padding: 0, textAlign: 'left' }}>
           {posts.map((post, index) => (
             <li key={index} style={{ marginBottom: '10px' }}>
@@ -43,7 +43,7 @@ function PostSelectionDialog({ posts, onClose, onSave }) {
                   type="checkbox"
                   checked={selectedPosts.includes(post)}
                   onChange={() => toggleSelection(post)}
-                  disabled={!selectedPosts.includes(post) && selectedPosts.length >= 3}
+                  disabled={!selectedPosts.includes(post) && selectedPosts.length >= 5}
                 />
                 {post.heading}
               </label>
