@@ -3,3 +3,4 @@ node_modules/
 
 # Environment variables
 .env
+python-backend/__pycache__/

@@ -9,10 +9,10 @@ function OneDayOneAI() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:5000/one-day-one-ai')
+    fetch('http://localhost:8000/one-day-one-ai')
       .then(response => response.json())
       .then(data => {
-        setData(data.topic);
+        setData(data);
         setLoading(false);
       })
       .catch(error => {
@@ -22,7 +22,7 @@ function OneDayOneAI() {
   }, []);
 
   const handleAskQuestion = () => {
-    fetch('http://localhost:5000/ask-question', {
+    fetch('http://localhost:8000/ask-question', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -75,11 +75,13 @@ function OneDayOneAI() {
         <p style={{ color: '#666', marginBottom: '10px', fontSize: '18px' }}><strong>📝 Simple Description:</strong> <br /> <br /> {data.simpleDescription}</p>
         <br />
         <p style={{ color: '#666', fontSize: '18px' }}><strong>📖 Detailed Description:</strong> <br /> <br /> <span dangerouslySetInnerHTML={{ __html: data.detailedDescription }} /></p>
+        <br />
+        <p style={{ color: '#666', fontSize: '18px' }}><strong>🌍 Real World Example:</strong> <br /> <br /> <span dangerouslySetInnerHTML={{ __html: data.realworldExample }} /></p>
       </div>
 
       {/* Second column */}
       <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {data.didYouKnowFacts.length > 0 && (
+        {data.didYouKnowFacts && data.didYouKnowFacts.length > 0 && (
           <div style={{ backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 6px 10px rgba(0, 0, 0, 0.15)', padding: '20px', textAlign: 'center' }}>
             <h4 style={{ textAlign: 'center', color: '#333', fontSize: '24px' }}>💡 Did You Know?</h4>
             <ul style={{ color: '#666', paddingLeft: '20px', fontSize: '20px', listStyleType: 'none', padding: 0, textAlign: 'left' }}>
