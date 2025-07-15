@@ -25,7 +25,7 @@ app.add_middleware(
 async def one_day_one_ai():
     openai_client = init_openai()
     ai_terms = load_ai_terms()
-    description_generator_agent, insights_agent, _ = get_onedayoneai_agents(openai_client)
+    description_generator_agent, insights_agent, _, quiz_agent = get_onedayoneai_agents(openai_client)
     try:
         with trace(workflow_name="AI Learning Workflow"):
             topic = random.choice(ai_terms)
@@ -33,12 +33,15 @@ async def one_day_one_ai():
             descriptions = json.loads(description_result.final_output)
             insights_result = await Runner.run(insights_agent, input=f"Provide intriguing or mind-blowing facts about the topic: {topic}")
             insights = json.loads(insights_result.final_output)
+            quiz_result = await Runner.run(quiz_agent, input=f"Generate a quiz for the topic: {topic}. More details on the topic here: {description_result.final_output}")
+            quiz = json.loads(quiz_result.final_output)
         return {
             "topicName": topic,
             "simpleDescription": descriptions["simpleDescription"],
             "detailedDescription": descriptions["detailedDescription"],
             "realworldExample": descriptions["realworldExample"],
-            "didYouKnowFacts": insights
+            "didYouKnowFacts": insights,
+            "quiz": quiz
         }
     except Exception as e:
         return {"error": str(e)}

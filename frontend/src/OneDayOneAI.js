@@ -6,6 +6,9 @@ function OneDayOneAI() {
   const [loading, setLoading] = useState(false);
   const [question, setQuestion] = useState('');
   const [popupContent, setPopupContent] = useState(null);
+  const [quizData, setQuizData] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -13,6 +16,7 @@ function OneDayOneAI() {
       .then(response => response.json())
       .then(data => {
         setData(data);
+        setQuizData(data.quiz); // Extract quiz data from the response
         setLoading(false);
       })
       .catch(error => {
@@ -47,6 +51,15 @@ function OneDayOneAI() {
 
   const closePopup = () => {
     setPopupContent(null);
+  };
+
+  const handleNextQuestion = () => {
+    setCurrentQuestionIndex((prevIndex) => (prevIndex + 1) % quizData.length);
+    setShowAnswer(false);
+  };
+
+  const handleShowAnswer = () => {
+    setShowAnswer(true);
   };
 
   if (loading) {
@@ -89,6 +102,34 @@ function OneDayOneAI() {
                 <li key={index} style={{ marginBottom: '10px' }}>✨ {fact}</li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* Quiz section */}
+        {quizData.length > 0 && (
+          <div style={{ backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 6px 10px rgba(0, 0, 0, 0.15)', padding: '20px', textAlign: 'center' }}>
+            <h4 style={{ textAlign: 'center', color: '#333', fontSize: '20px' }}>🧠 Quiz</h4>
+            <p style={{ color: '#666', fontSize: '18px' }}>{quizData[currentQuestionIndex].question}</p>
+            <ul style={{ listStyleType: 'none', padding: 0 }}>
+              {quizData[currentQuestionIndex].options.map((option, index) => (
+                <li key={index} style={{ marginBottom: '10px', color: '#333', fontSize: '16px' }}>{option}</li>
+              ))}
+            </ul>
+            {showAnswer && (
+              <p style={{ color: '#007BFF', fontSize: '16px' }}>Answer: {quizData[currentQuestionIndex].answer}</p>
+            )}
+            <button
+              onClick={handleShowAnswer}
+              style={{ padding: '10px 20px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', marginRight: '10px' }}
+            >
+              Show Answer
+            </button>
+            <button
+              onClick={handleNextQuestion}
+              style={{ padding: '10px 20px', backgroundColor: '#28A745', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+            >
+              Next Question
+            </button>
           </div>
         )}
 

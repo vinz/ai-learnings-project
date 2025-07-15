@@ -3,7 +3,7 @@ import json
 from openai import AsyncAzureOpenAI
 from agents import Agent, Runner, OpenAIChatCompletionsModel, set_default_openai_client, set_tracing_export_api_key, set_tracing_disabled
 from dotenv import load_dotenv
-from prompts import DESCRIPTION_GENERATOR_PROMPT, INSIGHTS_AGENT_PROMPT, QUESTION_ANSWER_AGENT_PROMPT, LINKEDIN_GENERATOR_PROMPT
+from prompts import DESCRIPTION_GENERATOR_PROMPT, INSIGHTS_AGENT_PROMPT, QUESTION_ANSWER_AGENT_PROMPT, LINKEDIN_GENERATOR_PROMPT, QUIZ_PROMPT
 
 # Load environment variables
 load_dotenv()
@@ -49,7 +49,17 @@ def get_onedayoneai_agents(openai_client):
             openai_client=openai_client,
         )
     )
-    return description_generator_agent, insights_agent, question_answer_agent
+
+    quiz_agent = Agent(
+        name="AIQuizAgent",
+        instructions=QUIZ_PROMPT,
+        model=OpenAIChatCompletionsModel(
+            model="gpt-4.1",
+            openai_client=openai_client,
+        )
+    )
+
+    return description_generator_agent, insights_agent, question_answer_agent, quiz_agent
 
 def get_linkedin_generator_agent(openai_client):
     linkedin_generator_agent = Agent(

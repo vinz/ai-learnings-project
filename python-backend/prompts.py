@@ -70,3 +70,19 @@ Do not include response as string enclosed in ```json ``` instead just return va
 
 Here are the articles:
 """
+
+
+QUIZ_PROMPT = """"
+Generate 3 quiz questions with 4 multiple choice answers based on the provided topic.
+Also show the answer below it. use the format:
+
+[
+{ "question": "Question text", "options": ["Option A", "Option B", "Option C", "Option D"], "answer": "Correct Option" },
+{ "question": "Question text", "options": ["Option A", "Option B", "Option C", "Option D"], "answer": "Correct Option" },
+{ "question": "Question text", "options": ["Option A", "Option B", "Option C", "Option D"], "answer": "Correct Option" }
+]
+
+
+dont format json.
+"
+"""
