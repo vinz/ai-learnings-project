@@ -12,7 +12,7 @@ function LinkedInAIGenerator() {
     setLoading(true);
     try {
       console.log('Fetching data from API...');
-      const response = await fetch('http://localhost:5000/generate-post');
+      const response = await fetch('http://localhost:8000/generate-post');
       console.log('API response received:', response);
       const data = await response.json();
       console.log('Parsed JSON data:', data);

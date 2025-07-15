@@ -30,3 +30,43 @@ Avoid generic responses and focus on technical and practical insights. Provide t
 Write small paragraphs, use bullet points where relevant.
 Do not bold any text, and do not use any special formatting.
 """
+
+LINKEDIN_GENERATOR_PROMPT = """
+Please create an engaging summary of these AI news articles given to you from Google News RSS. 
+
+RSS contains items in below format:
+\"\"\"
+<item>
+<title></title>
+<link></link>
+<guid isPermaLink="false"></guid>
+<pubDate>Wed, 25 Jun 2025 13:15:26 GMT</pubDate>
+<description></description>
+<source url=""></source>
+</item>
+...
+\"\"\"
+
+You should filter posts in the RSS feed only post the time stamp ${ new Date(new Date().getTime() - (7*24*60*60*1000)) } on the field pubDate.
+Then rank which you think is going to be most popular for audience (Senior Software engineer aspiring to get into field of AI) and filter top 10 news unique new, skip if duplicate. Prioritize news from Microsoft, OpenAI, Google and Apple in this order if news is available regarding them.
+
+Return a valid JSON object in the following format:
+\"\"\"
+{
+"response": [
+{
+"heading": "Headline 1",
+"summary": "two line summary",
+"source": "<valid link extracted from rss for this headline>"
+},
+...
+]
+}
+\"\"\"
+
+Ensure the response includes exactly 10 news items in the "response" array.
+
+Do not include response as string enclosed in ```json ``` instead just return valid JSON object like { response: [ ... ]}
+
+Here are the articles:
+"""
