@@ -15,9 +15,10 @@ This project consists of two main components:
 
 ### Backend
 The backend provides services for generating AI-related posts, answering questions, and sharing daily AI insights. Key files include:
-- `askQuestion.js`: Handles AI-related queries.
-- `generatePost.js`: Generates AI-themed posts.
-- `oneDayOneAI.js`: Shares daily AI facts and insights.
+- `main.py`: Entry point for the Python backend.
+- `models.py`: Contains data models for AI-related content.
+- `prompts.py`: Handles AI-related prompts and queries.
+- `aiTerms.json`: Stores AI-related terms and definitions.
 
 ### Frontend
 The frontend offers an interactive user interface for selecting and generating AI posts. Key files include:
@@ -33,8 +34,7 @@ The frontend offers an interactive user interface for selecting and generating A
 ## Getting Started
 
 ### Prerequisites
-- Node.js
-- npm or yarn
+- python
 
 ### Installation
 1. Clone the repository:
@@ -52,9 +52,9 @@ The frontend offers an interactive user interface for selecting and generating A
    ```
 
 ### Running the Project
-1. Start the backend server:
+1. Start the Python backend server:
    ```bash
-   cd backend && npm start
+   cd python-backend && python main.py
    ```
 2. Start the frontend development server:
    ```bash
