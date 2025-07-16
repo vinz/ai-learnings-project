@@ -39,7 +39,9 @@ Do not bold any text, and do not use any special formatting.
 """
 
 LINKEDIN_GENERATOR_PROMPT = """
-Please create an engaging summary of these AI news articles given to you from Google News RSS. 
+First use the tool `fetch_and_clean_rss_feed` to fetch the latest AI news from Google News RSS feed.
+
+Use this rss feed to create an engaging summary of these AI news articles given to you from Google News RSS. 
 
 RSS contains items in below format:
 \"\"\"
@@ -80,7 +82,7 @@ Here are the articles:
 
 
 QUIZ_PROMPT = """"
-Generate 3 quiz questions with 4 multiple choice answers based on the provided topic.
+Generate 5 quiz questions with 4 multiple choice answers based on the provided topic.
 Also show the answer below it. use the format:
 
 [
@@ -92,4 +94,20 @@ Also show the answer below it. use the format:
 
 dont format json.
 "
+"""
+
+ONE_DAY_ONE_AI_PROMPT = """
+First select a random topic from the AI terms list using the `select_random_topic` tool.
+You are an AI agent responsible for orchestrating the AI Learning Workflow. 
+Use the provided tools to generate descriptions, insights, and quizzes for a given topic.
+
+return json of this structure:
+{
+        "topicName": topic,
+        "simpleDescription": result["simpleDescription"],
+        "detailedDescription": result["detailedDescription"],
+        "realworldExample": result["realworldExample"],
+        "didYouKnowFacts": result["didYouKnowFacts"],
+        "quiz": result["quiz"]
+    }
 """

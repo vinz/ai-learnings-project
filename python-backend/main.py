@@ -1,10 +1,9 @@
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-import random
 import json
 from agents import Runner, trace
-from models import init_openai, get_onedayoneai_agents, load_ai_terms, get_linkedin_generator_agent
+from models import init_openai, get_one_day_one_ai_agent, get_linkedin_generator_agent
 from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
@@ -21,52 +20,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+print("Initializing OpenAI client...")
+openai_client = init_openai()
+print("OpenAI client initialized successfully.")
+
 @app.get("/one-day-one-ai")
 async def one_day_one_ai():
-    print("Initializing OpenAI client...")
-    openai_client = init_openai()
-    print("OpenAI client initialized successfully.")
 
-    print("Loading AI terms...")
-    ai_terms = load_ai_terms()
-    # print(f"AI terms loaded: {ai_terms}")
-
-    print("Initializing agents...")
-    description_generator_agent, insights_agent, _, quiz_agent = get_onedayoneai_agents(openai_client)
-    print("Agents initialized successfully.")
+    print("Initializing OneDayOneAIAgent...")
+    one_day_one_ai_agent = get_one_day_one_ai_agent(openai_client)
+    print("OneDayOneAIAgent initialized successfully.")
 
     try:
         print("Starting AI Learning Workflow...")
         with trace(workflow_name="AI Learning Workflow"):
-            print("Selecting a random topic from AI terms...")
-            topic = random.choice(ai_terms)
-            print(f"Selected topic: {topic}")
+            print("Running OneDayOneAIAgent...")
+            workflow_input = "Select a random topic from AI terms list and generate descriptions, insights, and quizzes for the selected topic."
+            workflow_result = await Runner.run(one_day_one_ai_agent, input=workflow_input)
+            print("Workflow completed successfully.")
 
-            print("Generating descriptions for the topic...")
-            description_result = await Runner.run(description_generator_agent, input=f"Generate descriptions for the topic: {topic}")
-            print("Descriptions generated successfully.")
-            print("Description result:", description_result.final_output)
-            descriptions = json.loads(description_result.final_output)
-
-            print("Generating insights for the topic...")
-            insights_result = await Runner.run(insights_agent, input=f"Provide intriguing or mind-blowing facts about the topic: {topic}")
-            print("Insights generated successfully.")
-            insights = json.loads(insights_result.final_output)
-
-            print("Generating quiz for the topic...")
-            quiz_result = await Runner.run(quiz_agent, input=f"Generate a quiz for the topic: {topic}. More details on the topic here: {description_result.final_output}")
-            print("Quiz generated successfully.")
-            quiz = json.loads(quiz_result.final_output)
-
-        print("AI Learning Workflow completed successfully.")
-        return {
-            "topicName": topic,
-            "simpleDescription": descriptions["simpleDescription"],
-            "detailedDescription": descriptions["detailedDescription"],
-            "realworldExample": descriptions["realworldExample"],
-            "didYouKnowFacts": insights,
-            "quiz": quiz
-        }
+            # Parse the result
+            print("Result: ", workflow_result.final_output)
+            result = json.loads(workflow_result.final_output)
+            return result
     except Exception as e:
         print("Error occurred during AI Learning Workflow:", str(e))
         return {"error": str(e)}
@@ -76,7 +52,6 @@ async def ask_question_endpoint(
     question: str = Body(..., description="The question to ask"),
     context: dict = Body(..., description="The context for the question")
 ):
-    openai_client = init_openai()
     _, _, question_answer_agent = get_onedayoneai_agents(openai_client)
     try:
         with trace(workflow_name="Ask Question Workflow"):
@@ -89,31 +64,13 @@ async def ask_question_endpoint(
 @app.get("/generate-post")
 async def generate_post():
     print("Starting LinkedIn post generation...")
-    RSS_URL = "https://news.google.com/rss/topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRGRqTVhZU0JXVnVMVWRDR2dKSlRpZ0FQAQ/sections/CAQiR0NCQVNMd29JTDIwdk1EZGpNWFlTQldWdUxVZENHZ0pKVGlJTkNBUWFDUW9ITDIwdk1HMXJlaW9KRWdjdmJTOHdiV3Q2S0FBKi4IACoqCAoiJENCQVNGUW9JTDIwdk1EZGpNWFlTQldWdUxVZENHZ0pKVGlnQVABUAE?hl=en-IN&gl=IN&ceid=IN%3Aen"
 
-    def fetch_rss_feed(url):
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.text
-
-    openai_client = init_openai()
     linkedin_generator_agent = get_linkedin_generator_agent(openai_client)
 
     try:
-        print("Fetching RSS feed...")
-        rss_content = fetch_rss_feed(RSS_URL)
-        print("RSS feed fetched successfully.")
-
-        # remove description tags from the RSS content - this will reduce the size of the RSS feed sent to the agent
-        soup = BeautifulSoup(rss_content, "xml")
-        for desc in soup.find_all("description"):
-            desc.decompose()
-        rss_content = str(soup)
-
-
         print("Running LinkedIn Generator Agent...")
         with trace(workflow_name="LinkedIn Post Generation Workflow"):
-            response_result = await Runner.run(linkedin_generator_agent, input=rss_content)
+            response_result = await Runner.run(linkedin_generator_agent, input="Generate a LinkedIn post based on the latest AI news.")
             response = response_result.final_output
 
         print("Generated LinkedIn post successfully.")
