@@ -29,7 +29,7 @@ def get_onedayoneai_agents(openai_client):
         name="AIDescriptionGeneratorAgent",
         instructions=DESCRIPTION_GENERATOR_PROMPT,
         model=OpenAIChatCompletionsModel(
-            model="gpt-4.1",
+            model=os.getenv("AZURE_OPENAI_MODEL_NAME"),
             openai_client=openai_client,
         )
     )
@@ -37,7 +37,7 @@ def get_onedayoneai_agents(openai_client):
         name="AIInsightsAgent",
         instructions=INSIGHTS_AGENT_PROMPT,
         model=OpenAIChatCompletionsModel(
-            model="gpt-4.1",
+            model=os.getenv("AZURE_OPENAI_MODEL_NAME"),
             openai_client=openai_client,
         )
     )
@@ -45,7 +45,7 @@ def get_onedayoneai_agents(openai_client):
         name="AIQuestionAnswerAgent",
         instructions=QUESTION_ANSWER_AGENT_PROMPT,
         model=OpenAIChatCompletionsModel(
-            model="gpt-4.1",
+            model=os.getenv("AZURE_OPENAI_MODEL_NAME"),
             openai_client=openai_client,
         )
     )
@@ -54,7 +54,7 @@ def get_onedayoneai_agents(openai_client):
         name="AIQuizAgent",
         instructions=QUIZ_PROMPT,
         model=OpenAIChatCompletionsModel(
-            model="gpt-4.1",
+            model=os.getenv("AZURE_OPENAI_MODEL_NAME"),
             openai_client=openai_client,
         )
     )
@@ -66,7 +66,7 @@ def get_linkedin_generator_agent(openai_client):
         name="LinkedInGeneratorAgent",
         instructions=LINKEDIN_GENERATOR_PROMPT,
         model=OpenAIChatCompletionsModel(
-            model="gpt-4.1",
+            model=os.getenv("AZURE_OPENAI_MODEL_NAME"),
             openai_client=openai_client,
         )
     )

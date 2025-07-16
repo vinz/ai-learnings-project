@@ -23,25 +23,42 @@ app.add_middleware(
 
 @app.get("/one-day-one-ai")
 async def one_day_one_ai():
+    print("Initializing OpenAI client...")
     openai_client = init_openai()
-    ai_terms = load_ai_terms()
-    description_generator_agent, insights_agent, _, quiz_agent = get_onedayoneai_agents(openai_client)
-    try:
-        with trace(workflow_name="AI Learning Workflow"):
-            # Randomly select a topic from the AI terms
-            topic = random.choice(ai_terms)
+    print("OpenAI client initialized successfully.")
 
-            # Generate descriptions for the selected topic
+    print("Loading AI terms...")
+    ai_terms = load_ai_terms()
+    # print(f"AI terms loaded: {ai_terms}")
+
+    print("Initializing agents...")
+    description_generator_agent, insights_agent, _, quiz_agent = get_onedayoneai_agents(openai_client)
+    print("Agents initialized successfully.")
+
+    try:
+        print("Starting AI Learning Workflow...")
+        with trace(workflow_name="AI Learning Workflow"):
+            print("Selecting a random topic from AI terms...")
+            topic = random.choice(ai_terms)
+            print(f"Selected topic: {topic}")
+
+            print("Generating descriptions for the topic...")
             description_result = await Runner.run(description_generator_agent, input=f"Generate descriptions for the topic: {topic}")
+            print("Descriptions generated successfully.")
+            print("Description result:", description_result.final_output)
             descriptions = json.loads(description_result.final_output)
-            
-            # Generate insights and quiz
+
+            print("Generating insights for the topic...")
             insights_result = await Runner.run(insights_agent, input=f"Provide intriguing or mind-blowing facts about the topic: {topic}")
+            print("Insights generated successfully.")
             insights = json.loads(insights_result.final_output)
-            
-            # Generate quiz
+
+            print("Generating quiz for the topic...")
             quiz_result = await Runner.run(quiz_agent, input=f"Generate a quiz for the topic: {topic}. More details on the topic here: {description_result.final_output}")
+            print("Quiz generated successfully.")
             quiz = json.loads(quiz_result.final_output)
+
+        print("AI Learning Workflow completed successfully.")
         return {
             "topicName": topic,
             "simpleDescription": descriptions["simpleDescription"],
@@ -51,6 +68,7 @@ async def one_day_one_ai():
             "quiz": quiz
         }
     except Exception as e:
+        print("Error occurred during AI Learning Workflow:", str(e))
         return {"error": str(e)}
 
 @app.post("/ask-question")
