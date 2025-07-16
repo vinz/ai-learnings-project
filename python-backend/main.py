@@ -28,11 +28,18 @@ async def one_day_one_ai():
     description_generator_agent, insights_agent, _, quiz_agent = get_onedayoneai_agents(openai_client)
     try:
         with trace(workflow_name="AI Learning Workflow"):
+            # Randomly select a topic from the AI terms
             topic = random.choice(ai_terms)
+
+            # Generate descriptions for the selected topic
             description_result = await Runner.run(description_generator_agent, input=f"Generate descriptions for the topic: {topic}")
             descriptions = json.loads(description_result.final_output)
+            
+            # Generate insights and quiz
             insights_result = await Runner.run(insights_agent, input=f"Provide intriguing or mind-blowing facts about the topic: {topic}")
             insights = json.loads(insights_result.final_output)
+            
+            # Generate quiz
             quiz_result = await Runner.run(quiz_agent, input=f"Generate a quiz for the topic: {topic}. More details on the topic here: {description_result.final_output}")
             quiz = json.loads(quiz_result.final_output)
         return {
@@ -78,6 +85,13 @@ async def generate_post():
         print("Fetching RSS feed...")
         rss_content = fetch_rss_feed(RSS_URL)
         print("RSS feed fetched successfully.")
+
+        # remove description tags from the RSS content - this will reduce the size of the RSS feed sent to the agent
+        soup = BeautifulSoup(rss_content, "xml")
+        for desc in soup.find_all("description"):
+            desc.decompose()
+        rss_content = str(soup)
+
 
         print("Running LinkedIn Generator Agent...")
         with trace(workflow_name="LinkedIn Post Generation Workflow"):
